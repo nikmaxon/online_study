@@ -11,14 +11,20 @@ class LessonSerializer(serializers.ModelSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
-    lesson = LessonSerializer(source='lesson_set.all', **MANYABLE)
+    lessons = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Course
         fields = '__all__'
 
+    def get_lessons_count(self, instance):
+        return instance.lesson_set.all().count()
+
 
 class PaymentSerializer(serializers.ModelSerializer):
+    course = CourseSerializer(**MANYABLE)
+    lesson = LessonSerializer(**MANYABLE)
+
     class Meta:
         model = Payment
         fields = '__all__'
