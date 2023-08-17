@@ -5,7 +5,7 @@ from users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    user_payment = PaymentSerializer(many=True, read_only=True)
+    user_payment = PaymentSerializer(source='payment_set', many=True, read_only=True)
 
     class Meta:
         model = User
