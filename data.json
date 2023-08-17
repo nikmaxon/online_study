@@ -1,0 +1,90 @@
+[
+  {
+    "model": "course.lesson",
+    "pk": 11,
+    "fields": {
+      "title": "Django",
+      "description": "Джан Го",
+      "preview": "",
+      "video_url": null
+    }
+  },
+  {
+    "model": "course.lesson",
+    "pk": 12,
+    "fields": {
+      "title": "HTML",
+      "description": "Эйч Ти Эм Эль",
+      "preview": "",
+      "video_url": null
+    }
+  },
+  {
+    "model": "course.lesson",
+    "pk": 13,
+    "fields": {
+      "title": "CSS",
+      "description": "Си Эс ЭС ",
+      "preview": "",
+      "video_url": null
+    }
+  },
+  {
+    "model": "course.lesson",
+    "pk": 14,
+    "fields": {
+      "title": "PHP",
+      "description": "Пэ Ха Пэ",
+      "preview": "",
+      "video_url": null
+    }
+  },
+  {
+    "model": "course.payment",
+    "pk": 2,
+    "fields": {
+      "user": null,
+      "course": null,
+      "lesson": null,
+      "amount": 300,
+      "method": null,
+      "date": "2023-08-17"
+    }
+  },
+  {
+    "model": "course.payment",
+    "pk": 3,
+    "fields": {
+      "user": null,
+      "course": null,
+      "lesson": null,
+      "amount": 250,
+      "method": null,
+      "date": "2023-08-17"
+    }
+  },
+  {
+    "model": "course.payment",
+    "pk": 4,
+    "fields": {
+      "user": null,
+      "course": null,
+      "lesson": null,
+      "amount": 350,
+      "method": null,
+      "date": "2023-08-17"
+    }
+  },
+  {
+    "model": "course.payment",
+    "pk": 5,
+    "fields": {
+      "user": null,
+      "course": null,
+      "lesson": null,
+      "amount": 400,
+      "method": null,
+      "date": "2023-08-17"
+    }
+  }
+]
