@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
-
+from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters import rest_framework as filters
 from course.models import Course, Lesson, Payment
 from course.serializers import CourseSerializer, LessonSerializer, PaymentSerializer, CourseCreateSerializer
 
@@ -10,10 +12,6 @@ class CourseViewSet(viewsets.ModelViewSet):
     """Отображение курсов"""
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
-
-    def post(self, *args, **kwargs):
-        self.serializer_class = CourseCreateSerializer
-        super()
 
 
 # Уроки
@@ -26,6 +24,10 @@ class LessonListAPIView(generics.ListAPIView):
     """Вывод списка уроков"""
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
+
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ('course', 'lesson', 'date')
+    ordering_fields = ('date',)
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
@@ -50,6 +52,10 @@ class PaymentListAPIView(generics.ListAPIView):
     """Вывод списка платежей"""
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
+
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ('course', 'lesson', 'date')
+    ordering_fields = ('date',)
 
 
 class PaymentCreateAPIView(generics.CreateAPIView):
