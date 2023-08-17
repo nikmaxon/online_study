@@ -42,6 +42,6 @@ class CourseCreateSerializer(serializers.ModelSerializer):
         course_item = Course.objects.create(**validated_data)
 
         for item in lesson:
-            Course.objects.create(**item, course=course_item)
+            Lesson.objects.create(**item, course=course_item)
 
         return course_item
