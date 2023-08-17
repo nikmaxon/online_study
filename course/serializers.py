@@ -28,3 +28,20 @@ class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
         fields = '__all__'
+
+
+class CourseCreateSerializer(serializers.ModelSerializer):
+    lesson = LessonSerializer(**MANYABLE)
+
+    class Meta:
+        model = Course
+        fields = '__all__'
+
+    def create(self, validated_data):
+        lesson = validated_data.pop('lesson')
+        course_item = Course.objects.create(**validated_data)
+
+        for item in lesson:
+            Course.objects.create(**item, course=course_item)
+
+        return course_item

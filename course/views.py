@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, generics
 
 from course.models import Course, Lesson, Payment
-from course.serializers import CourseSerializer, LessonSerializer, PaymentSerializer
+from course.serializers import CourseSerializer, LessonSerializer, PaymentSerializer, CourseCreateSerializer
 
 
 # Курсы
@@ -10,6 +10,10 @@ class CourseViewSet(viewsets.ModelViewSet):
     """Отображение курсов"""
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
+
+    def post(self, *args, **kwargs):
+        self.serializer_class = CourseCreateSerializer
+        super()
 
 
 # Уроки
