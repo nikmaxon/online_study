@@ -1,0 +1,24 @@
+[
+  {
+    "model": "course.lesson",
+    "pk": 2,
+    "fields": {
+      "title": "Хардбасс",
+      "description": "Рас рас рас",
+      "preview": "",
+      "video_url": null
+    }
+  },
+  {
+    "model": "course.payment",
+    "pk": 1,
+    "fields": {
+      "user": null,
+      "course": null,
+      "lesson": 2,
+      "amount": 350,
+      "method": null,
+      "date": "2023-08-17"
+    }
+  }
+]
