@@ -5,8 +5,9 @@ from rest_framework.routers import DefaultRouter
 
 from course.views import CourseViewSet, LessonCreateAPIView, LessonListAPIView, LessonRetrieveAPIView, \
     LessonUpdateAPIView, LessonDestroyAPIView, PaymentCreateAPIView, PaymentListAPIView
+from users.apps import UsersConfig
 
-app_name = CourseConfig.name
+app_name = UsersConfig.name
 
 
 router = DefaultRouter()
