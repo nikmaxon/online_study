@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from users.models import NULLABLE
 
@@ -7,6 +8,9 @@ class Course(models.Model):
     title = models.CharField(max_length=150, verbose_name='Название')
     preview = models.ImageField(**NULLABLE, upload_to='course/', verbose_name='Превью')
     description = models.TextField(verbose_name='Описание')
+
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE,
+                             verbose_name='Создатель')
 
     def __str__(self):
         return f'{self.title}'
@@ -23,6 +27,9 @@ class Lesson(models.Model):
     description = models.TextField(verbose_name='Описание')
     preview = models.ImageField(**NULLABLE, upload_to='course/', verbose_name='Превью')
     video_url = models.SlugField(**NULLABLE, verbose_name='Ссылка на видео')
+
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE,
+                              verbose_name='Создатель')
 
     def __str__(self):
         return f'{self.title}'
@@ -41,7 +48,8 @@ class Payment(models.Model):
         (BANK, 'Перевод'),
     ]
 
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE, **NULLABLE, verbose_name='Пользователь')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE,
+                             verbose_name='Пользователь')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE, verbose_name='Курс')
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, **NULLABLE, verbose_name='Урок')
 

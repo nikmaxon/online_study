@@ -21,3 +21,12 @@ class UserListAPIView(generics.ListAPIView):
     """Отображение пользователей"""
     serializer_class = UserSerializer
     queryset = User.objects.all()
+
+
+class UserUpdateAPIView(generics.UpdateAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+
+class UserDestroyAPIView(generics.DestroyAPIView):
+    queryset = User.objects.all()
