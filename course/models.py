@@ -9,6 +9,7 @@ class Course(models.Model):
     preview = models.ImageField(**NULLABLE, upload_to='course/', verbose_name='Превью')
     description = models.TextField(verbose_name='Описание')
 
+    is_public = models.BooleanField(default=False)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE,
                              verbose_name='Создатель')
 
@@ -28,6 +29,7 @@ class Lesson(models.Model):
     preview = models.ImageField(**NULLABLE, upload_to='course/', verbose_name='Превью')
     video_url = models.SlugField(**NULLABLE, verbose_name='Ссылка на видео')
 
+    is_public = models.BooleanField(default=False)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE,
                               verbose_name='Создатель')
 
