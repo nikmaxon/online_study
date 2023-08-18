@@ -14,7 +14,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     """Отображение курсов"""
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
-    permission_classes = [IsAuthenticated, IsOwner | IsModerator]
+    permission_classes = [IsAuthenticated]
 
 
 # Уроки
