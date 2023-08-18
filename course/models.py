@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from users.models import NULLABLE
 
@@ -8,6 +9,10 @@ class Course(models.Model):
     preview = models.ImageField(**NULLABLE, upload_to='course/', verbose_name='Превью')
     description = models.TextField(verbose_name='Описание')
 
+    is_public = models.BooleanField(default=False)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE,
+                             verbose_name='Создатель')
+
     def __str__(self):
         return f'{self.title}'
 
@@ -17,10 +22,16 @@ class Course(models.Model):
 
 
 class Lesson(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE, verbose_name='Курс')
+
     title = models.CharField(max_length=150, verbose_name='Название')
     description = models.TextField(verbose_name='Описание')
     preview = models.ImageField(**NULLABLE, upload_to='course/', verbose_name='Превью')
     video_url = models.SlugField(**NULLABLE, verbose_name='Ссылка на видео')
+
+    is_public = models.BooleanField(default=False)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE,
+                              verbose_name='Создатель')
 
     def __str__(self):
         return f'{self.title}'
@@ -39,7 +50,8 @@ class Payment(models.Model):
         (BANK, 'Перевод'),
     ]
 
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE, **NULLABLE, verbose_name='Пользователь')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE,
+                             verbose_name='Пользователь')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE, verbose_name='Курс')
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, **NULLABLE, verbose_name='Урок')
 
@@ -53,4 +65,4 @@ class Payment(models.Model):
     class Meta:
         verbose_name = 'Платеж'
         verbose_name_plural = 'Платежи'
-        ordering = ('-course', '-lesson', '-amount', '-date', '-method')
+        ordering = ('-course', '-lesson', '-date', '-method')
