@@ -54,7 +54,6 @@ class LessonCRUDTestCase(APITestCase):
     def test_create_lesson(self):
         """ Тест создания уроков"""
         pass
-        
 
 
 class CourseTestCase(APITestCase):
