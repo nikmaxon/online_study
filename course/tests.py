@@ -148,9 +148,9 @@ class CourseTestCase(APITestCase):
 
         self.assertEqual(
             response.json(),
-            [{'id': 2, 'lessons': 0, 'title': 'list test', 'preview': None, 'description': 'list test',
-              'is_public': False,
-              'owner': None}]
+            {'count': 1, 'next': None, 'previous': None, 'results': [
+                {'id': 2, 'lessons': 0, 'title': 'list test', 'preview': None, 'description': 'list test',
+                 'is_public': False, 'owner': None}]}
         )
 
     def test_create_course(self):
@@ -165,8 +165,6 @@ class CourseTestCase(APITestCase):
             '/courses/',
             data=data
         )
-
-        print(response.json())
 
         self.assertEqual(
             response.status_code,
