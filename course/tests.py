@@ -2,11 +2,18 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from course.models import Course, Lesson
+from users.models import User
 
 
 class LessonCRUDTestCase(APITestCase):
 
     def setUp(self):
+        self.user = User.objects.create(
+            email='test@test.com',
+        )
+        self.user.set_password('test')
+        self.user.save()
+
         self.course = Course.objects.create(
             title='course test',
             description='course test'
@@ -15,7 +22,8 @@ class LessonCRUDTestCase(APITestCase):
         self.lesson = Lesson.objects.create(
             title='lesson test',
             description='lesson test',
-            course=self.course
+            course=self.course,
+            owner=self.user
         )
 
     def test_lesson_list(self):
@@ -53,7 +61,67 @@ class LessonCRUDTestCase(APITestCase):
 
     def test_create_lesson(self):
         """ Тест создания уроков"""
-        pass
+
+        data = {
+            'title': 'test create',
+            'description': 'test create'
+        }
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post(
+            reverse('course:create_lesson'),
+            data=data
+        )
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_201_CREATED
+        )
+
+    def test_lesson_retrieve(self) -> None:
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.get(f'/lesson/{self.lesson.pk}/')
+
+        self.assertEqual(
+            response.status_code, status.HTTP_200_OK,
+        )
+        response = response.json()
+
+    def test_lesson_update(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {
+            'title': 'update lesson',
+            'description': 'update lesson',
+        }
+
+        response = self.client.put(
+            path=f'/lesson/update/{self.lesson.pk}/', data=data,
+        )
+
+        self.assertEqual(
+            response.status_code, status.HTTP_200_OK,
+        )
+        response = response.json()
+
+    def test_lesson_delete(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.delete(
+            f'/lesson/delete/{self.lesson.pk}/',
+        )
+
+        self.assertEqual(
+            response.status_code, status.HTTP_204_NO_CONTENT,
+        )
+        self.assertFalse(
+            Lesson.objects.all().exists(),
+        )
+
+    def tearDown(self) -> None:
+        self.user.delete()
+        self.course.delete()
+        self.lesson.delete()
 
 
 class CourseTestCase(APITestCase):
