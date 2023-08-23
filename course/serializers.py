@@ -17,7 +17,7 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = '__all__'
 
-    def get_lessons_count(self, instance):
+    def get_lessons(self, instance):
         return instance.lesson_set.all().count()
 
 
