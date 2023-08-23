@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters import rest_framework as filters
 from course.models import Course, Lesson, Payment
+from course.paginators import ListPaginator
 from course.permissions import IsOwnerOrStaff, IsModerator, IsOwner
 from course.serializers import CourseSerializer, LessonSerializer, PaymentSerializer, CourseCreateSerializer
 
@@ -13,8 +14,9 @@ from course.serializers import CourseSerializer, LessonSerializer, PaymentSerial
 class CourseViewSet(viewsets.ModelViewSet):
     """Отображение курсов"""
     serializer_class = CourseSerializer
+    pagination_class = ListPaginator
     queryset = Course.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
 
 # Уроки
@@ -32,8 +34,9 @@ class LessonCreateAPIView(generics.CreateAPIView):
 class LessonListAPIView(generics.ListAPIView):
     """Вывод списка уроков"""
     serializer_class = LessonSerializer
+    pagination_class = ListPaginator
     queryset = Lesson.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):

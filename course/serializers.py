@@ -1,13 +1,19 @@
 from rest_framework import serializers
 from course.models import Course, Lesson, Payment
+from course.validators import VideoURLValidator
 
 MANYABLE = {'many': True, 'read_only': True}
 
 
 class LessonSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Lesson
         fields = '__all__'
+
+        validators = [
+            VideoURLValidator(field_name='video_url'),
+        ]
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -17,7 +23,7 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = '__all__'
 
-    def get_lessons_count(self, instance):
+    def get_lessons(self, instance):
         return instance.lesson_set.all().count()
 
 
