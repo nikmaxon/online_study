@@ -78,6 +78,7 @@ class LessonCRUDTestCase(APITestCase):
         )
 
     def test_lesson_retrieve(self) -> None:
+        """ Тест просмотра урока """
         self.client.force_authenticate(user=self.user)
 
         response = self.client.get(f'/lesson/{self.lesson.pk}/')
@@ -88,6 +89,7 @@ class LessonCRUDTestCase(APITestCase):
         response = response.json()
 
     def test_lesson_update(self):
+        """ Тест обновления урока """
         self.client.force_authenticate(user=self.user)
 
         data = {
@@ -124,6 +126,64 @@ class LessonCRUDTestCase(APITestCase):
         self.lesson.delete()
 
 
+class ValodatorsTestCase(APITestCase):
+
+    def setUp(self):
+        self.user = User.objects.create(
+            email='test@test.com',
+        )
+        self.user.set_password('test')
+        self.user.save()
+
+        self.course = Course.objects.create(
+            title='course test',
+            description='course test'
+        )
+
+        self.lesson = Lesson.objects.create(
+            title='lesson test',
+            description='lesson test',
+            course=self.course,
+            owner=self.user
+        )
+
+    def test_lesson_validator_create(self):
+        """ Тест создания   уроков"""
+
+        data = {
+            'title': 'test create validator',
+            'description': 'test create validator',
+            'video_url': 'sky@pro.ru'
+        }
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post(
+            reverse('course:create_lesson'),
+            data=data
+        )
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_400_BAD_REQUEST
+        )
+
+    def test_course_validator_create(self):
+        data = {
+            "title": "Test",
+            "description": "Test",
+            "video_url": "sky@pro.ru"
+        }
+
+        response = self.client.post(
+            '/courses/',
+            data=data
+        )
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_400_BAD_REQUEST
+        )
+
+
 class CourseTestCase(APITestCase):
 
     def setUp(self):
@@ -146,11 +206,13 @@ class CourseTestCase(APITestCase):
             status.HTTP_200_OK
         )
 
+        # print(response.json())
+
         self.assertEqual(
             response.json(),
             {'count': 1, 'next': None, 'previous': None, 'results': [
                 {'id': 2, 'lessons': 0, 'title': 'list test', 'preview': None, 'description': 'list test',
-                 'is_public': False, 'owner': None}]}
+                 'video_url': None, 'is_public': False, 'owner': None}]}
         )
 
     def test_create_course(self):
@@ -171,11 +233,12 @@ class CourseTestCase(APITestCase):
             status.HTTP_201_CREATED
         )
 
+        # print(response.json())
+
         self.assertEqual(
             response.json(),
-            {'id': 1, 'lessons': 0, 'title': 'Test', 'preview': None, 'description': 'Test', 'is_public': False,
-             'owner': None}
-
+            {'id': 1, 'lessons': 0, 'title': 'Test', 'preview': None, 'description': 'Test', 'video_url': None,
+             'is_public': False, 'owner': None}
         )
 
         self.assertTrue(

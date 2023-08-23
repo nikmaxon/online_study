@@ -8,10 +8,11 @@ class Course(models.Model):
     title = models.CharField(max_length=150, verbose_name='Название')
     preview = models.ImageField(**NULLABLE, upload_to='course/', verbose_name='Превью')
     description = models.TextField(verbose_name='Описание')
+    video_url = models.URLField(**NULLABLE, verbose_name='Ссылка на видео')
 
     is_public = models.BooleanField(default=False)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE,
-                             verbose_name='Создатель')
+                              verbose_name='Создатель')
 
     def __str__(self):
         return f'{self.title}'
