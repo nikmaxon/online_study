@@ -23,3 +23,30 @@ class User(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+
+
+class Subscription(models.Model):
+
+    class Meta:
+        verbose_name = 'Подписка на курс'
+        verbose_name_plural = 'Подписки на курс'
+
+    sub_name = models.CharField(
+        max_length=300, verbose_name='название подписки', null=True, blank=True,
+    )
+    course = models.ForeignKey(
+        'course.Course', verbose_name='курс для подписки', on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
+    user = models.ForeignKey(
+        'users.User', verbose_name='пользователь', on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
+
+    def __str__(self):
+        return f'{self.course} {self.user}'
+
+    def save(self, *args, **kwargs):
+        self.course_name = self.course.name
+
+        return super(Subscription, self).save(*args, **kwargs)
