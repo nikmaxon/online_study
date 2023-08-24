@@ -19,4 +19,4 @@ class AlreadySubscribedCheck:
         subs = user.subscriptions.all()
 
         if subs.filter(course=course).exists():
-            raise serializers.ValidationError(f'Пользователь {user} - уже подписан на этот курс.')
+            raise serializers.ValidationError(f'Пользователь уже подписан на этот курс.')

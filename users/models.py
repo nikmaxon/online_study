@@ -26,13 +26,12 @@ class User(AbstractUser):
 
 
 class Subscription(models.Model):
-
     class Meta:
         verbose_name = 'Подписка на курс'
         verbose_name_plural = 'Подписки на курс'
 
-    sub_name = models.CharField(
-        max_length=300, verbose_name='название подписки', null=True, blank=True,
+    course_name = models.CharField(
+        max_length=300, verbose_name='название подписки', **NULLABLE,
     )
     course = models.ForeignKey(
         'course.Course', verbose_name='курс для подписки', on_delete=models.CASCADE,
@@ -47,6 +46,6 @@ class Subscription(models.Model):
         return f'{self.course} {self.user}'
 
     def save(self, *args, **kwargs):
-        self.course_name = self.course.name
+        self.course_name = self.course.title
 
         return super(Subscription, self).save(*args, **kwargs)

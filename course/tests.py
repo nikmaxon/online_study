@@ -96,7 +96,6 @@ class LessonCRUDTestCase(APITestCase):
         )
         response = response.json()
 
-
         self.assertTrue(
             Lesson.objects.all().exists()
         )
@@ -111,7 +110,8 @@ class LessonCRUDTestCase(APITestCase):
         }
 
         response = self.client.put(
-            path=f'/lesson/update/{self.lesson.pk}/', data=data,
+            path=f'/lesson/update/{self.lesson.pk}/',
+            data=data,
         )
 
         self.assertEqual(
