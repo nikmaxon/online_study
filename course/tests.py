@@ -59,6 +59,10 @@ class LessonCRUDTestCase(APITestCase):
             }
         )
 
+        self.assertTrue(
+            Lesson.objects.all().exists()
+        )
+
     def test_create_lesson(self):
         """ Тест создания уроков"""
 
@@ -77,6 +81,10 @@ class LessonCRUDTestCase(APITestCase):
             status.HTTP_201_CREATED
         )
 
+        self.assertTrue(
+            Lesson.objects.all().exists()
+        )
+
     def test_lesson_retrieve(self) -> None:
         """ Тест просмотра урока """
         self.client.force_authenticate(user=self.user)
@@ -87,6 +95,11 @@ class LessonCRUDTestCase(APITestCase):
             response.status_code, status.HTTP_200_OK,
         )
         response = response.json()
+
+
+        self.assertTrue(
+            Lesson.objects.all().exists()
+        )
 
     def test_lesson_update(self):
         """ Тест обновления урока """
@@ -105,6 +118,10 @@ class LessonCRUDTestCase(APITestCase):
             response.status_code, status.HTTP_200_OK,
         )
         response = response.json()
+
+        self.assertTrue(
+            Lesson.objects.all().exists()
+        )
 
     def test_lesson_delete(self):
         self.client.force_authenticate(user=self.user)
@@ -213,6 +230,9 @@ class CourseTestCase(APITestCase):
             {'count': 1, 'next': None, 'previous': None, 'results': [
                 {'id': 2, 'lessons': 0, 'title': 'list test', 'preview': None, 'description': 'list test',
                  'video_url': None, 'is_public': False, 'owner': None}]}
+        )
+        self.assertTrue(
+            Course.objects.all().exists()
         )
 
     def test_create_course(self):
