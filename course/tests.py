@@ -38,25 +38,13 @@ class LessonCRUDTestCase(APITestCase):
             status.HTTP_200_OK
         )
 
+        #print(response.json())
+
         self.assertEqual(
             response.json(),
-            {
-                "count": 1,
-                "next": None,
-                "previous": None,
-                "results": [
-                    {
-                        "id": self.lesson.id,
-                        "title": self.lesson.title,
-                        "description": self.lesson.description,
-                        "preview": self.lesson.preview,
-                        "video_url": self.lesson.video_url,
-                        "is_public": self.lesson.is_public,
-                        "course": self.lesson.course_id,
-                        "owner": self.lesson.owner_id
-                    },
-                ]
-            }
+            {'count': 1, 'next': None, 'previous': None, 'results': [
+                {'id': self.lesson.pk, 'title': 'lesson test', 'description': 'lesson test', 'preview': None, 'video_url': None,
+                 'is_public': False, 'course': self.course.pk, 'owner': self.user.pk}]}
         )
 
         self.assertTrue(

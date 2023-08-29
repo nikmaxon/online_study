@@ -42,6 +42,8 @@ class Subscription(models.Model):
         related_name='subscriptions',
     )
 
+    is_subscribed = models.BooleanField(default=False, verbose_name='Подписка оформлена')
+
     def __str__(self):
         return f'{self.course} {self.user}'
 
