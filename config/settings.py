@@ -17,6 +17,9 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env_path = BASE_DIR / '.env'
+load_dotenv(dotenv_path=env_path)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -87,9 +90,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'school',
-        'USER': 'postgres',
-        'PASSWORD': '229'
-
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': int(os.getenv('DB_PASSWORD')),
     }
 }
 
@@ -169,3 +171,5 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
+
+STRIPE_TOKEN = os.getenv('STRIPE_TOKEN')

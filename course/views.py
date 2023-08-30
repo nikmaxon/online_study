@@ -8,6 +8,7 @@ from course.models import Course, Lesson, Payment
 from course.paginators import ListPaginator
 from course.permissions import IsOwnerOrStaff, IsModerator, IsOwner
 from course.serializers import CourseSerializer, LessonSerializer, PaymentSerializer, CourseCreateSerializer
+from course.services import get_session_of_payment, save_serializer, get_payment_info
 
 
 # Курсы
@@ -73,3 +74,22 @@ class PaymentListAPIView(generics.ListAPIView):
 class PaymentCreateAPIView(generics.CreateAPIView):
     """Создание платежа"""
     serializer_class = PaymentSerializer
+
+    def perform_create(self, serializer):
+        session = get_session_of_payment(self)
+        save_serializer(self, session, serializer)
+
+
+class PaymentRetrieveAPIView(generics.RetrieveAPIView):
+    serializer_class = PaymentSerializer
+    queryset = Payment.objects.all()
+
+    def get_object(self):
+        payment = super().get_object()
+
+        if payment.status != 'complete':
+            stripe_data = get_payment_info(payment.stripe_payment_id)
+            payment.status = stripe_data.get('status')
+            payment.save()
+
+        return payment
