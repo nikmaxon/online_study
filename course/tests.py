@@ -1,7 +1,7 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from course.models import Course, Lesson
+from course.models import Course, Lesson, Payment
 from users.models import User
 
 
@@ -38,12 +38,13 @@ class LessonCRUDTestCase(APITestCase):
             status.HTTP_200_OK
         )
 
-        #print(response.json())
+        # print(response.json())
 
         self.assertEqual(
             response.json(),
             {'count': 1, 'next': None, 'previous': None, 'results': [
-                {'id': self.lesson.pk, 'title': 'lesson test', 'description': 'lesson test', 'preview': None, 'video_url': None,
+                {'id': self.lesson.pk, 'title': 'lesson test', 'description': 'lesson test', 'preview': None,
+                 'video_url': None,
                  'is_public': False, 'course': self.course.pk, 'owner': self.user.pk}]}
         )
 
